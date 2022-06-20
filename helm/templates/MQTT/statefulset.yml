@@ -1,28 +1,29 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mosquitto
+  name: rabbitmq
 spec:
-  serviceName: mosquitto
+  serviceName: rabbitmq
   selector:
     matchLabels:
-      app: mosquitto
+      app: rabbitmq
   replicas: 1
   template:
     metadata:
       labels:
-        app: mosquitto
+        app: rabbitmq
     spec:
       containers:
-        - name: mosquitto
-          image: eclipse-mosquitto
+        - name: rabbitmq
+          image: rabbitmq:management
           imagePullPolicy: "IfNotPresent"
           ports:
-            - containerPort: 5432
+            - containerPort: 5672
+            - containerPort: 15672
           volumeMounts:
-          - name: mosquitto-data
-            mountPath: /mosquitto/data
+          - name: rabbitmq-data
+            mountPath: /rabbitmq/data
       volumes:
-      - name: mosquitto-data
+      - name: rabbitmq-data
         persistentVolumeClaim:
-          claimName: mosquitto-pvc
+          claimName: rabbitmq-pvc

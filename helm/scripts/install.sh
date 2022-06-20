@@ -1,0 +1,1 @@
+helm --kube-context homeserver install -n test test ../
