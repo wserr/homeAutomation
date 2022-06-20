@@ -5,15 +5,15 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - port: 5672
-    name: messagebus
-    targetPort: 5672
-    nodePort: 30001
+  - port: 1883
+    name: mqtt
+    targetPort: 1883
+    nodePort: {{ .Values.rabbitmq.mqtt_nodePort }}
     protocol: TCP
   - port: 15672
     name: portal
     targetPort: 15672
-    nodePort: 30002
+    nodePort: {{ .Values.rabbitmq.portal_nodePort }}
     protocol: TCP
   selector:
     app: rabbitmq

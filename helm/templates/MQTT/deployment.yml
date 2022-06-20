@@ -1,9 +1,8 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: rabbitmq
 spec:
-  serviceName: rabbitmq
   selector:
     matchLabels:
       app: rabbitmq
@@ -15,15 +14,10 @@ spec:
     spec:
       containers:
         - name: rabbitmq
-          image: rabbitmq:management
+          image: registry.willemserruys.com/rabbitmq
           imagePullPolicy: "IfNotPresent"
           ports:
-            - containerPort: 5672
+            - containerPort: 1883
             - containerPort: 15672
-          volumeMounts:
-          - name: rabbitmq-data
-            mountPath: /rabbitmq/data
-      volumes:
-      - name: rabbitmq-data
-        persistentVolumeClaim:
-          claimName: rabbitmq-pvc
+      imagePullSecrets:
+      - name: regcred

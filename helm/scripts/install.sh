@@ -1,1 +1,1 @@
-helm --kube-context homeserver install -n test test ../
+helm --kube-context homeserver install -f ../values-homeserver.yml -n test test ../
