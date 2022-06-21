@@ -1,1 +1,0 @@
-helm --kube-context homeserver uninstall -n test test
