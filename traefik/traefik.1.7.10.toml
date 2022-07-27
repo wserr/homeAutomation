@@ -1,0 +1,35 @@
+defaultEntryPoints = ["http"]
+
+[entryPoints]
+    [entryPoints.whoami]
+    address = ":8088"
+    [entryPoints.homeassistant]
+    address = ":8089"
+    [entryPoints.syncthing]
+    address = ":8090"
+
+[file]
+
+[backends]
+    [backends.whoami]
+        [backends.whoami.servers.server1]
+        url = "http://localhost:2001"
+    [backends.homeassistant]
+        [backends.homeassistant.servers.server1]
+        url = "http://10.155.223.3:8123/"
+    [backends.syncthing]
+        [backends.syncthing.servers.server1]
+        url = "http://10.155.223.3:8384/"
+
+[frontends]
+    [frontends.whoami]
+    entryPoints = ["whoami"]
+    backend = "whoami"
+
+    [frontends.homeassistant]
+    entryPoints = ["homeassistant"]
+    backend = "homeassistant"
+
+    [frontends.syncthing]
+    entryPoints = ["syncthing"]
+    backend = "syncthing"
