@@ -12,6 +12,7 @@ services:
       - 8123:8123
     volumes:
       - /home/willem/homeassistant:/config
+      - /home/willem/repos/homeAutomation/home-assistant/configuration.yaml:/config/configuration.yaml
     restart: unless-stopped
   syncthing:
     image: lscr.io/linuxserver/syncthing:latest
