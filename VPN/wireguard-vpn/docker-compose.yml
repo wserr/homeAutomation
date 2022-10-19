@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  whoami:
+    network_mode: "host"
+    image: traefik/whoami
+    command:
+      - --port=2001
+  traefik:
+    network_mode: "host"
+    image: "traefik:1.7.10"
+    volumes:
+      - /home/pi/repos/homeAutomation/traefik/traefik.1.7.10.toml:/etc/traefik/traefik.toml
