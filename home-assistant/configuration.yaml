@@ -13,4 +13,4 @@ scene: !include scenes.yaml
 http:
   use_x_forwarded_for: true
   trusted_proxies:
-  - 10.155.223.1
+  - 10.152.209.3
