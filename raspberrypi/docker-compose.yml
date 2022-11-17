@@ -7,6 +7,7 @@ services:
     command:
       - --port=2001
   traefik:
+    restart: unless-stopped
     network_mode: "host"
     image: "traefik:1.7.10"
     volumes:
