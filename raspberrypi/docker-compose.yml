@@ -1,6 +1,7 @@
 version: "3.9"
 services:
   whoami:
+    restart: unless-stopped
     network_mode: "host"
     image: traefik/whoami
     command:
@@ -11,10 +12,11 @@ services:
     volumes:
       - /home/pi/repos/homeAutomation/configurations/traefik/traefik.1.7.10.toml:/etc/traefik/traefik.toml
   mosquitto:
+    restart: unless-stopped
     image: eclipse-mosquitto:2
     volumes:
       - /home/pi/repos/homeAutomation/configurations/eclipse-mosquitto/:/mosquitto/config/:ro
       - ./log/:/mosquitto/log/
     ports:
-      - 1883:1883
+      - 2883:1883
       - 9001:9001
