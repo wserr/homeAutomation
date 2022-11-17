@@ -3,13 +3,13 @@ services:
   rabbitmq:
     image: "registry.willemserruys.com/rabbitmq:latest"
     ports:
-      - 2883:1883
-      - 15672:15672
+      - 10.55.8.3:2883:1883
+      - 10.55.8.3:15672:15672
     restart: unless-stopped
   homeassistant:
     image: "ghcr.io/home-assistant/home-assistant:stable"
     ports:
-      - 8123:8123
+      - 10.55.8.3:8123:8123
     volumes:
       - /home/willem/homeassistant:/config
       - /home/willem/repos/homeAutomation/home-assistant/configuration.yaml:/config/configuration.yaml
@@ -24,8 +24,8 @@ services:
     volumes:
       - /home/willem/syncthing:/data1
     ports:
-      - 8384:8384
-      - 22000:22000/tcp
-      - 22000:22000/udp
-      - 21027:21027/udp
+      - 10.55.8.3:8384:8384
+      - 10.55.8.3:22000:22000/tcp
+      - 10.55.8.3:22000:22000/udp
+      - 10.55.8.3:21027:21027/udp
     restart: unless-stopped
