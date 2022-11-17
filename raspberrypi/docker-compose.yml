@@ -9,4 +9,12 @@ services:
     network_mode: "host"
     image: "traefik:1.7.10"
     volumes:
-      - /home/pi/repos/homeAutomation/traefik/traefik.1.7.10.toml:/etc/traefik/traefik.toml
+      - /home/pi/repos/homeAutomation/configurations/traefik/traefik.1.7.10.toml:/etc/traefik/traefik.toml
+  mosquitto:
+    image: eclipse-mosquitto:2
+    volumes:
+      - /home/pi/repos/homeAutomation/configurations/eclipse-mosquitto/:/mosquitto/config/:ro
+      - ./log/:/mosquitto/log/
+    ports:
+      - 1883:1883
+      - 9001:9001
