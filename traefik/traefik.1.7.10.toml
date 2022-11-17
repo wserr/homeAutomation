@@ -16,10 +16,10 @@ defaultEntryPoints = ["http"]
         url = "http://localhost:2001"
     [backends.homeassistant]
         [backends.homeassistant.servers.server1]
-        url = "http://10.155.223.4:8123/"
+        url = "http://10.55.8.3:8123/"
     [backends.syncthing]
         [backends.syncthing.servers.server1]
-        url = "http://10.155.223.4:8384/"
+        url = "http://10.55.8.3:8384/"
 
 [frontends]
     [frontends.whoami]
