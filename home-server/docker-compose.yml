@@ -3,7 +3,7 @@ services:
   rabbitmq:
     image: "registry.willemserruys.com/rabbitmq:latest"
     ports:
-      - 10.55.8.3:2883:1883
+      - 10.55.8.3:1883:1883
       - 10.55.8.3:15672:15672
     restart: unless-stopped
   homeassistant:
