@@ -18,6 +18,11 @@ NOTE: on ubuntu, you need to add a symbolic link in order to enable the VPN ([so
 ln -s /usr/bin/resolvectl /usr/local/bin/resolvconf
 ```
 
+## Start docker-compose
+
+TODO add .sh script to start in production
+
+
 ## To Do
 
 - Start the VPN client automatically after reboot

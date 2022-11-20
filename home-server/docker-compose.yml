@@ -5,6 +5,11 @@ services:
     restart: unless-stopped
     ports:
       - ${INTERNAL_IP}:3306:3306
+    env_file:
+      # Override the mariadb-specific settings in a .env.mariadb file.
+      # You should create the .env.mariadb file yourself.
+      - .env
+      - .env.mariadb
   homeassistant:
     image: "ghcr.io/home-assistant/home-assistant:stable"
     ports:
