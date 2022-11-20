@@ -22,6 +22,14 @@ ln -s /usr/bin/resolvectl /usr/local/bin/resolvconf
 
 TODO add .sh script to start in production
 
+## Tips
+
+When database credentials are not updated after docker restart, consider using
+
+```bash
+docker compose rm db
+```
+
 
 ## To Do
 

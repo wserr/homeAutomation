@@ -1,23 +1,26 @@
 version: "3.9"
 services:
   db:
-    image: mariadb
+    image: mariadb:latest
     restart: unless-stopped
     ports:
-      - ${INTERNAL_IP}:3306:3306
+      - 3306:3306
     env_file:
-      # Override the mariadb-specific settings in a .env.mariadb file.
-      # You should create the .env.mariadb file yourself.
       - .env
-      - .env.mariadb
+      - .env.production
+    volumes:
+      - /home/willem/mariadb:/var/lib/mysql
   homeassistant:
     image: "ghcr.io/home-assistant/home-assistant:stable"
     ports:
       - ${INTERNAL_IP}:8123:8123
     volumes:
       - /home/willem/homeassistant:/config
-      - /home/willem/repos/homeAutomation/configurations/home-assistant/configuration.yaml:/config/configuration.yaml
+      - /home/willem/repos/homeAutomation/configurations/home-assistant/configuration.production.yaml:/config/configuration.yaml
     restart: unless-stopped
+    env_file:
+      - .env
+      - .env.production
   syncthing:
     image: lscr.io/linuxserver/syncthing:latest
     container_name: syncthing

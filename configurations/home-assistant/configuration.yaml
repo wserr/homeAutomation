@@ -1,5 +1,6 @@
 # Loads default set of integrations. Do not remove
 # This was added to the homeAutomation repo.
+# This is a sample configuration. Please create a configuration.production.yml for production use.
 default_config:
 
 # Text to speech
@@ -14,3 +15,6 @@ http:
   use_x_forwarded_for: true
   trusted_proxies:
   - 10.55.8.1
+
+
+

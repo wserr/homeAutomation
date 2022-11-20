@@ -1,1 +1,5 @@
-.env.mariadb
+# Environment files for docker composes
+.env.production
+
+# Home assistant configuration file
+configuration.production.yaml
