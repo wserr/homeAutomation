@@ -1,9 +1,14 @@
 version: "3.9"
 services:
+  db:
+    image: mariadb
+    restart: unless-stopped
+    ports:
+      - ${INTERNAL_IP}:3306:3306
   homeassistant:
     image: "ghcr.io/home-assistant/home-assistant:stable"
     ports:
-      - 10.55.8.3:8123:8123
+      - ${INTERNAL_IP}:8123:8123
     volumes:
       - /home/willem/homeassistant:/config
       - /home/willem/repos/homeAutomation/configurations/home-assistant/configuration.yaml:/config/configuration.yaml
@@ -18,8 +23,8 @@ services:
     volumes:
       - /home/willem/syncthing:/data1
     ports:
-      - 10.55.8.3:8384:8384
-      - 10.55.8.3:22000:22000/tcp
-      - 10.55.8.3:22000:22000/udp
-      - 10.55.8.3:21027:21027/udp
+      - ${INTERNAL_IP}:8384:8384
+      - ${INTERNAL_IP}:22000:22000/tcp
+      - ${INTERNAL_IP}:22000:22000/udp
+      - ${INTERNAL_IP}:21027:21027/udp
     restart: unless-stopped
