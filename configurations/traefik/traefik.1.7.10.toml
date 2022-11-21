@@ -7,12 +7,8 @@ defaultEntryPoints = ["http"]
     address = ":8089"
     [entryPoints.syncthing]
     address = ":8090"
-    [entryPoints.rabbitmq-admin]
-    address = ":8091"
-    [entryPoints.rabbitmq]
-    address = ":8092"
     [entryPoints.grafana]
-    address = ":8093"
+    address = ":8091"
 
 [file]
 
@@ -26,12 +22,6 @@ defaultEntryPoints = ["http"]
     [backends.syncthing]
         [backends.syncthing.servers.server1]
         url = "http://10.55.8.3:8384/"
-    [backends.rabbitmq-admin]
-        [backends.rabbitmq-admin.servers.server1]
-        url = "http://10.55.8.3:15672/"
-    [backends.rabbitmq]
-        [backends.rabbitmq.servers.server1]
-        url = "http://10.55.8.3:1883/"
     [backends.grafana]
         [backends.grafana.servers.server1]
         url = "http://10.55.8.3:3000/"
@@ -48,14 +38,6 @@ defaultEntryPoints = ["http"]
     [frontends.syncthing]
     entryPoints = ["syncthing"]
     backend = "syncthing"
-
-    [frontends.rabbitmq-admin]
-    entryPoints = ["rabbitmq-admin"]
-    backend = "rabbitmq-admin"
-
-    [frontends.rabbitmq]
-    entryPoints = ["rabbitmq"]
-    backend = "rabbitmq"
 
     [frontends.grafana]
     entryPoints = ["grafana"]
