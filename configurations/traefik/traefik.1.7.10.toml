@@ -11,6 +11,8 @@ defaultEntryPoints = ["http"]
     address = ":8091"
     [entryPoints.rabbitmq]
     address = ":8092"
+    [entryPoints.grafana]
+    address = ":8093"
 
 [file]
 
@@ -30,6 +32,9 @@ defaultEntryPoints = ["http"]
     [backends.rabbitmq]
         [backends.rabbitmq.servers.server1]
         url = "http://10.55.8.3:1883/"
+    [backends.grafana]
+        [backends.grafana.servers.server1]
+        url = "http://10.55.8.3:3000/"
 
 [frontends]
     [frontends.whoami]
@@ -52,3 +57,6 @@ defaultEntryPoints = ["http"]
     entryPoints = ["rabbitmq"]
     backend = "rabbitmq"
 
+    [frontends.grafana]
+    entryPoints = ["grafana"]
+    backend = "grafana"
