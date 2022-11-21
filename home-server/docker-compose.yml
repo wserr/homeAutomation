@@ -66,13 +66,14 @@ services:
       - '--web.enable-lifecycle'
     ports:
       - 9090:9090
+    user: "1000:1000"
   grafana:
     image: grafana/grafana:latest
-    environment:
     env_file:
       - .env
       - .env.production
     ports:
       - 3000:3000
+    user: "1000:1000"
     volumes:
       - /home/willem/grafana:/var/lib/grafana
