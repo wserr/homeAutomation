@@ -42,3 +42,4 @@ defaultEntryPoints = ["http"]
     [frontends.grafana]
     entryPoints = ["grafana"]
     backend = "grafana"
+    passHostHeader = true
