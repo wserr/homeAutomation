@@ -75,3 +75,21 @@ services:
     env_file:
       - .env
       - .env.production
+  influxdb:
+    container_name: influxdb
+    image: influxdb
+    restart: unless-stopped
+    ports:
+      - ${INTERNAL_IP}:8086:8086/tcp   # So we can access the WebUI
+    environment:
+      - TZ=Europe/Brussels
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+    env_file:
+      - .env.production
+    volumes:
+      - /home/willem/influxdb/data:/var/lib/influxdb2
+      - /home/willem/influxdb/config/:/etc/influxdb2
+    ulimits:
+      nofile:
+        soft: 32768
+        hard: 32768
