@@ -9,6 +9,8 @@ defaultEntryPoints = ["http"]
     address = ":8090"
     [entryPoints.grafana]
     address = ":8091"
+    [entryPoints.influxdb]
+    address = ":8092"
 
 [file]
 
@@ -25,6 +27,9 @@ defaultEntryPoints = ["http"]
     [backends.grafana]
         [backends.grafana.servers.server1]
         url = "http://10.55.8.3:3000/"
+    [backends.influxdb]
+        [backends.influxdb.servers.server1]
+        url = "http://10.55.8.3:8086/"
 
 [frontends]
     [frontends.whoami]
@@ -42,4 +47,9 @@ defaultEntryPoints = ["http"]
     [frontends.grafana]
     entryPoints = ["grafana"]
     backend = "grafana"
+    passHostHeader = true
+    
+    [frontends.influxdb]
+    entryPoints = ["influxdb"]
+    backend = "influxdb"
     passHostHeader = true
