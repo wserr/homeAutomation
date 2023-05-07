@@ -55,9 +55,6 @@ pub async fn fetch_weather_data(
     current_datetime: &DateTime<Utc>,
 ) -> Result<WeatherResponse, reqwest::Error> {
     let url = construct_weather_data_url(base_url, latitude, longitude, api_key, current_datetime);
-    let resp = reqwest::get(url.clone()).await?.text().await;
-    println!("{:?}", resp);
-
     reqwest::get(url).await?.json().await
 }
 

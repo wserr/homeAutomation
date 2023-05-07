@@ -52,6 +52,7 @@ async fn read_weather_data(settings: &input::Input) -> Result<()> {
         &settings.influx_db_token,
     )
     .await?;
+    println!("");
     Ok(())
 }
 
