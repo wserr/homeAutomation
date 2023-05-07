@@ -1,6 +1,6 @@
+use anyhow::Result;
 use chrono::{DateTime, Utc};
 use influxdb::{Client, InfluxDbWriteable};
-use anyhow::Result;
 
 #[derive(InfluxDbWriteable)]
 pub struct WeatherReading {

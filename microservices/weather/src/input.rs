@@ -1,9 +1,8 @@
-use serde::Deserialize;
 use crate::mode::Mode;
+use serde::Deserialize;
 
 #[derive(Deserialize, Debug)]
-pub struct Input
-{
+pub struct Input {
     #[serde(default)]
     pub program_mode: Mode,
     pub weather_api_base_url: String,
@@ -11,5 +10,5 @@ pub struct Input
     pub influx_db_base_url: String,
     pub influx_db_token: String,
     pub latitude: String,
-    pub longitude: String
+    pub longitude: String,
 }

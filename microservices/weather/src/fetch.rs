@@ -28,7 +28,11 @@ fn construct_weather_data_url(
 ) -> String {
     format!(
         "{}?lat={}&lon={}&dt={}&appid={}",
-        base_url, latitude, longitude, current_datetime.timestamp(), api_key
+        base_url,
+        latitude,
+        longitude,
+        current_datetime.timestamp(),
+        api_key
     )
 }
 
@@ -57,6 +61,9 @@ mod test {
             "abc",
             &Utc.with_ymd_and_hms(2023, 1, 2, 1, 0, 0).unwrap(),
         );
-        assert_eq!("http://test?lat=1.14&lon=1.12&dt=1672621200&appid=abc", result);
+        assert_eq!(
+            "http://test?lat=1.14&lon=1.12&dt=1672621200&appid=abc",
+            result
+        );
     }
 }
