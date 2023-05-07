@@ -1,6 +1,0 @@
-weather_api_base_url="https://api.openweathermap.org/data/2.5/weather"
-weather_api_key="4ce897f7ce77f84919fd990cc68d9d20"
-influx_db_base_url="http://jumpbox.io:8092"
-influx_db_token="R1BGVaxWrX_ySaovweRz6ZTBDvHa5omQkricJGmn3PrI44jpfU7411PSmHOCjGcNR7OcBjmtE9gA62boHHXoKg=="
-latitude="50.854019"
-longitude="3.355230"
