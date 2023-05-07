@@ -15,3 +15,5 @@ Cargo.lock
 
 # App settings
 Settings.toml
+
+.env
