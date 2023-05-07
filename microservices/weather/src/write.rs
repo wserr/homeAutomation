@@ -6,6 +6,10 @@ use influxdb::{Client, InfluxDbWriteable};
 pub struct WeatherReading {
     pub time: DateTime<Utc>,
     pub wind_speed: f32,
+    pub clouds: u16,
+    pub temp: f32,
+    pub id: Option<u16>,
+    pub main: Option<String>,
 }
 
 pub async fn write_weather_data(

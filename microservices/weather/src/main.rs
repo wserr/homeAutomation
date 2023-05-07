@@ -33,10 +33,18 @@ async fn read_weather_data(settings: &input::Input) -> Result<()> {
     .await?;
 
     info!("Start writing weather data...");
-    let map = write::WeatherReading {
+    let mut map = write::WeatherReading {
         wind_speed: result.wind.speed,
         time: Utc::now(),
+        temp: result.main.temp,
+        clouds: result.clouds.all,
+        main: None,
+        id: None,
     };
+    if let Some(weather_element) = result.weather.first() {
+        map.main = Some(weather_element.main.clone());
+        map.id = Some(weather_element.id);
+    }
     write::write_weather_data(
         map,
         &settings.influx_db_base_url,

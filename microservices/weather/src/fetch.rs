@@ -3,20 +3,31 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct WeatherResponse {
-    pub id: usize,
     pub weather: Vec<Weather>,
     pub wind: Wind,
+    pub main: Main,
+    pub clouds: Clouds,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Weather {
-    pub id: usize,
+    pub id: u16,
     pub main: String,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Main {
+    pub temp: f32,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Wind {
     pub speed: f32,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Clouds {
+    pub all: u16,
 }
 
 fn construct_weather_data_url(
@@ -27,7 +38,7 @@ fn construct_weather_data_url(
     current_datetime: &DateTime<Utc>,
 ) -> String {
     format!(
-        "{}?lat={}&lon={}&dt={}&appid={}",
+        "{}?lat={}&lon={}&dt={}&appid={}&exclude=minutely,hourly,daily,alerts",
         base_url,
         latitude,
         longitude,
@@ -44,6 +55,9 @@ pub async fn fetch_weather_data(
     current_datetime: &DateTime<Utc>,
 ) -> Result<WeatherResponse, reqwest::Error> {
     let url = construct_weather_data_url(base_url, latitude, longitude, api_key, current_datetime);
+    let resp = reqwest::get(url.clone()).await?.text().await;
+    println!("{:?}", resp);
+
     reqwest::get(url).await?.json().await
 }
 
@@ -62,7 +76,7 @@ mod test {
             &Utc.with_ymd_and_hms(2023, 1, 2, 1, 0, 0).unwrap(),
         );
         assert_eq!(
-            "http://test?lat=1.14&lon=1.12&dt=1672621200&appid=abc",
+            "http://test?lat=1.14&lon=1.12&dt=1672621200&appid=abc&exclude=minutely,hourly,daily,alerts",
             result
         );
     }
