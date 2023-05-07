@@ -17,3 +17,6 @@ Cargo.lock
 Settings.toml
 
 .env
+
+# Log files
+logs.*.txt
