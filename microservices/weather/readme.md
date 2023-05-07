@@ -14,3 +14,5 @@ influx_db_token="xxx"
 latitude="xxx"
 longitude="xxx"
 ```
+
+These settings can also be specified in the environment variables, when running in docker.
