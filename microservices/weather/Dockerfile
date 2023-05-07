@@ -1,9 +1,9 @@
-FROM rust:1.61.0 as builder
-# 2. Copy the files in your machine to the Docker image
-COPY ./ ./
+FROM rust:1.67 as builder
+WORKDIR /usr/src/weather
+COPY . .
+RUN cargo install --path .
 
-# Build your program for release
-RUN cargo build --release
-
-# Run the binary
-CMD ["./target/release/test_weather_data"]
+FROM debian:bullseye-slim as runtime-base
+RUN apt-get update && apt-get install -y libssl1.1 ca-certificates libsasl2-dev && rm -rf /var/lib/apt/lists/*
+COPY --from=builder /usr/local/cargo/bin/weather /usr/local/bin/weather
+CMD ["weather"]
