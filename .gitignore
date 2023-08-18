@@ -3,3 +3,6 @@
 
 # Home assistant configuration file
 configuration.production.yaml
+
+.env
+run-docker.sh
