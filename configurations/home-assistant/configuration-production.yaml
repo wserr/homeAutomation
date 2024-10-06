@@ -1,0 +1,13 @@
+# Loads default set of integrations. Do not remove
+# This was added to the homeAutomation repo.
+# This is a sample configuration. Please create a configuration.production.yml for production use.
+default_config:
+
+automation: !include automations.yaml
+script: !include scripts.yaml
+scene: !include scenes.yaml
+
+http:
+  use_x_forwarded_for: true
+  trusted_proxies:
+  - 172.18.0.0/24

@@ -1,0 +1,25 @@
+## traefik.yml
+
+# Docker configuration backend
+providers:
+  docker:
+    defaultRule: "Host(`{{ trimPrefix `/` .Name }}.docker.localhost`)"
+
+# API and dashboard configuration
+api:
+  insecure: true
+
+tracing:
+  capturedRequestHeaders:
+    - X-Forwarded-Prefix
+  otlp:
+    grpc:
+      endpoint: otel-collector:4317
+      insecure: true
+
+metrics:
+  otlp:
+    addEntryPointsLabels: true
+    grpc:
+      endpoint: otel-collector:4317
+      insecure: true
