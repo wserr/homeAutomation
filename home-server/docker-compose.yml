@@ -1,26 +1,36 @@
-version: "3.9"
 services:
+  whoami:
+    restart: unless-stopped
+    image: traefik/whoami
+    command:
+      - --port=2001
+  traefik:
+    restart: unless-stopped
+    image: "traefik:1.7.10"
+    volumes:
+      - ${REPO_DIR}/configurations/traefik/traefik.1.7.10.toml:/etc/traefik/traefik.toml
+      - ${STORAGE_DIR}/certificates:/var/lib/certificates
+    ports:
+      - 80:80
+      - 443:443
   db:
     image: mariadb:latest
     restart: unless-stopped
     ports:
-      - ${INTERNAL_IP}:3306:3306
+      - 3306:3306
     env_file:
-      - .env
-      - .env.production
+      - envs/local.env
+      - envs/production.env
     volumes:
-      - /home/willem/mariadb:/var/lib/mysql
+      - ${STORAGE_DIR}/mariadb:/var/lib/mysql
   homeassistant:
     image: "ghcr.io/home-assistant/home-assistant:stable"
-    ports:
-      - ${INTERNAL_IP}:8123:8123
     volumes:
-      - /home/willem/homeassistant:/config
-      - /home/willem/repos/homeAutomation/configurations/home-assistant/configuration.production.yaml:/config/configuration.yaml
+      - ${STORAGE_DIR}/homeassistant:/config
     restart: unless-stopped
     env_file:
-      - .env
-      - .env.production
+      - envs/local.env
+      - envs/production.env
   syncthing:
     image: lscr.io/linuxserver/syncthing:latest
     container_name: syncthing
@@ -29,12 +39,11 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - /home/willem/syncthing:/data1
+      - ${STORAGE_DIR}/syncthing:/data1
     ports:
-      - ${INTERNAL_IP}:8384:8384
-      - ${INTERNAL_IP}:22000:22000/tcp
-      - ${INTERNAL_IP}:22000:22000/udp
-      - ${INTERNAL_IP}:21027:21027/udp
+      - 22000:22000/tcp
+      - 22000:22000/udp
+      - 21027:21027/udp
     restart: unless-stopped
   node-exporter:
     image: prom/node-exporter:latest
@@ -50,14 +59,14 @@ services:
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
     ports:
-      - ${INTERNAL_IP}:9100:9100
+      - 9100:9100
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
     restart: unless-stopped
     volumes:
-      - /home/willem/repos/homeAutomation/configurations/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - /home/willem/prometheus:/prometheus
+      - ${REPO_DIR}/configurations/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ${STORAGE_DIR}/prometheus:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -65,31 +74,37 @@ services:
       - '--web.console.templates=/etc/prometheus/consoles'
       - '--web.enable-lifecycle'
     ports:
-      - ${INTERNAL_IP}:9090:9090
+      - 9090:9090
   grafana:
     image: grafana/grafana:latest
-    ports:
-      - ${INTERNAL_IP}:3000:3000
     volumes:
-      - /home/willem/grafana:/var/lib/grafana
+      - ${STORAGE_DIR}/grafana:/var/lib/grafana
     env_file:
-      - .env
-      - .env.production
+      - envs/local.env
+      - envs/production.env
   influxdb:
     container_name: influxdb
     image: influxdb
     restart: unless-stopped
-    ports:
-      - ${INTERNAL_IP}:8086:8086/tcp   # So we can access the WebUI
     environment:
       - TZ=Europe/Brussels
       - DOCKER_INFLUXDB_INIT_MODE=setup
     env_file:
-      - .env.production
+      - envs/local.env
+      - envs/production.env
     volumes:
-      - /home/willem/influxdb/data:/var/lib/influxdb2
-      - /home/willem/influxdb/config/:/etc/influxdb2
+      - ${STORAGE_DIR}/influxdb/data:/var/lib/influxdb2
+      - ${STORAGE_DIR}/influxdb/config/:/etc/influxdb2
     ulimits:
       nofile:
         soft: 32768
         hard: 32768
+  otel-collector:
+    container_name: otel-collector
+    image: otel/opentelemetry-collector-contrib:0.111.0
+    restart: unless-stopped
+    volumes:
+      - ${REPO_DIR}/configurations/otel/collector-config.yaml:/etc/otelcol-contrib/config.yaml
+# Only enable if external services present
+#     ports:
+#       - 4317:4317 # OTLP gRPC receiver
