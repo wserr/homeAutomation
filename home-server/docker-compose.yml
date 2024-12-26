@@ -26,8 +26,8 @@ services:
     ports:
       - 3306:3306
     env_file:
-      - envs/local.env
-      - envs/production.env
+      - environment-variables/local.env
+      - environment-variables/production.env
     volumes:
       - ${STORAGE_DIR}/mariadb:/var/lib/mysql
   homeassistant:
@@ -40,8 +40,8 @@ services:
       - ${REPO_DIR}/configurations/home-assistant/configuration-production.yaml:/config/configuration.yaml
     restart: unless-stopped
     env_file:
-      - envs/local.env
-      - envs/production.env
+      - environment-variables/local.env
+      - environment-variables/production.env
   syncthing:
     image: lscr.io/linuxserver/syncthing:latest
     container_name: syncthing
@@ -96,8 +96,8 @@ services:
     volumes:
       - ${STORAGE_DIR}/grafana:/var/lib/grafana
     env_file:
-      - envs/local.env
-      - envs/production.env
+      - environment-variables/local.env
+      - environment-variables/production.env
     labels:
       - traefik.http.routers.grafana.rule=Host(`grafana.pladijs`)
       - traefik.http.services.grafana.loadbalancer.server.port=3000
@@ -112,8 +112,8 @@ services:
       - TZ=Europe/Brussels
       - DOCKER_INFLUXDB_INIT_MODE=setup
     env_file:
-      - envs/local.env
-      - envs/production.env
+      - environment-variables/local.env
+      - environment-variables/production.env
     volumes:
       - ${STORAGE_DIR}/influxdb/data:/var/lib/influxdb2
       - ${STORAGE_DIR}/influxdb/config/:/etc/influxdb2
