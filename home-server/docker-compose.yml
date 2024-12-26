@@ -1,40 +1,63 @@
-version: "3.9"
 services:
+  traefik:
+    restart: unless-stopped
+    image: traefik:v3.2
+    labels:
+      - traefik.http.routers.dashboard.rule=Host(`traefik.pladijs`)
+      - traefik.http.services.dashboard.loadbalancer.server.port=8080
+    volumes:
+      - ${REPO_DIR}/configurations/traefik/traefik.yml:/etc/traefik/traefik.yml
+      - ${STORAGE_DIR}/certificates:/var/lib/certificates
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 80:80
+      - 443:443
+  whoami:
+    restart: unless-stopped
+    image: traefik/whoami
+    labels:
+      - traefik.http.routers.whoami.rule=Host(`whoami.pladijs`)
+      - traefik.http.services.whoami.loadbalancer.server.port=2001
+    command:
+      - --port=2001
   db:
     image: mariadb:latest
     restart: unless-stopped
     ports:
-      - ${INTERNAL_IP}:3306:3306
+      - 3306:3306
     env_file:
-      - .env
-      - .env.production
+      - environment-variables/local.env
+      - environment-variables/production.env
     volumes:
-      - /home/willem/mariadb:/var/lib/mysql
+      - ${STORAGE_DIR}/mariadb:/var/lib/mysql
   homeassistant:
     image: "ghcr.io/home-assistant/home-assistant:stable"
-    ports:
-      - ${INTERNAL_IP}:8123:8123
+    labels:
+      - traefik.http.routers.homeassistant.rule=Host(`homeassistant.pladijs`)
+      - traefik.http.services.homeassistant.loadbalancer.server.port=8123
     volumes:
-      - /home/willem/homeassistant:/config
-      - /home/willem/repos/homeAutomation/configurations/home-assistant/configuration.production.yaml:/config/configuration.yaml
+      - ${STORAGE_DIR}/homeassistant:/config
+      - ${REPO_DIR}/configurations/home-assistant/configuration-production.yaml:/config/configuration.yaml
     restart: unless-stopped
     env_file:
-      - .env
-      - .env.production
+      - environment-variables/local.env
+      - environment-variables/production.env
   syncthing:
     image: lscr.io/linuxserver/syncthing:latest
     container_name: syncthing
+    labels:
+      - traefik.http.routers.syncthing.rule=Host(`syncthing.pladijs`)
+      - traefik.http.services.syncthing.loadbalancer.server.port=8384
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - /home/willem/syncthing:/data1
+      - ${STORAGE_DIR}/syncthing:/data1
     ports:
-      - ${INTERNAL_IP}:8384:8384
-      - ${INTERNAL_IP}:22000:22000/tcp
-      - ${INTERNAL_IP}:22000:22000/udp
-      - ${INTERNAL_IP}:21027:21027/udp
+      - 22000:22000/tcp
+      - 22000:22000/udp
+      - 21027:21027/udp
     restart: unless-stopped
   node-exporter:
     image: prom/node-exporter:latest
@@ -49,47 +72,61 @@ services:
       - '--path.rootfs=/rootfs'
       - '--path.sysfs=/host/sys'
       - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
-    ports:
-      - ${INTERNAL_IP}:9100:9100
+    labels:
+      - traefik.http.routers.node-exporter.rule=Host(`node-exporter.pladijs`)
+      - traefik.http.services.node-exporter.loadbalancer.server.port=9100
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
     restart: unless-stopped
+    labels:
+      - traefik.http.routers.prometheus.rule=Host(`prometheus.pladijs`)
+      - traefik.http.services.prometheus.loadbalancer.server.port=9090
     volumes:
-      - /home/willem/repos/homeAutomation/configurations/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - /home/willem/prometheus:/prometheus
+      - ${REPO_DIR}/configurations/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ${STORAGE_DIR}/prometheus:/prometheus
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
       - '--web.console.libraries=/etc/prometheus/console_libraries'
       - '--web.console.templates=/etc/prometheus/consoles'
       - '--web.enable-lifecycle'
-    ports:
-      - ${INTERNAL_IP}:9090:9090
   grafana:
     image: grafana/grafana:latest
-    ports:
-      - ${INTERNAL_IP}:3000:3000
     volumes:
-      - /home/willem/grafana:/var/lib/grafana
+      - ${STORAGE_DIR}/grafana:/var/lib/grafana
     env_file:
-      - .env
-      - .env.production
+      - environment-variables/local.env
+      - environment-variables/production.env
+    labels:
+      - traefik.http.routers.grafana.rule=Host(`grafana.pladijs`)
+      - traefik.http.services.grafana.loadbalancer.server.port=3000
   influxdb:
     container_name: influxdb
+    labels:
+      - traefik.http.routers.influxdb.rule=Host(`influxdb.pladijs`)
+      - traefik.http.services.influxdb.loadbalancer.server.port=8086
     image: influxdb
     restart: unless-stopped
-    ports:
-      - ${INTERNAL_IP}:8086:8086/tcp   # So we can access the WebUI
     environment:
       - TZ=Europe/Brussels
       - DOCKER_INFLUXDB_INIT_MODE=setup
     env_file:
-      - .env.production
+      - environment-variables/local.env
+      - environment-variables/production.env
     volumes:
-      - /home/willem/influxdb/data:/var/lib/influxdb2
-      - /home/willem/influxdb/config/:/etc/influxdb2
+      - ${STORAGE_DIR}/influxdb/data:/var/lib/influxdb2
+      - ${STORAGE_DIR}/influxdb/config/:/etc/influxdb2
     ulimits:
       nofile:
         soft: 32768
         hard: 32768
+  otel-collector:
+    container_name: otel-collector
+    image: otel/opentelemetry-collector-contrib:0.111.0
+    restart: unless-stopped
+    volumes:
+      - ${REPO_DIR}/configurations/otel/collector-config.yaml:/etc/otelcol-contrib/config.yaml
+# Only enable if external services present
+#     ports:
+#       - 4317:4317 # OTLP gRPC receiver

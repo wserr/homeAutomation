@@ -35,3 +35,12 @@ docker compose rm db
 
 - Start the VPN client automatically after reboot
 
+## Generate self signed certificates
+
+https://stackoverflow.com/questions/10175812/how-to-generate-a-self-signed-ssl-certificate-using-openssl
+
+> non-interactive and 10 years expiration
+
+```bash
+openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 3650 -nodes -subj "/C=homeassistant/ST=Belgium/L=Deerlijk/O=Willem/OU=Willem/CN=willem" -subj '/CN=homeassistant.com'
+```

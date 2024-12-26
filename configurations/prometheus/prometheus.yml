@@ -8,8 +8,11 @@ scrape_configs:
     - targets: ["prometheus:9090"]
 
   - job_name: "node"
+    scrape_interval: 1m
     static_configs:
     - targets: ["node-exporter:9100"]
-  - job_name: "pi_node"
+
+  - job_name: "otel"
+    scrape_interval: 5s
     static_configs:
-    - targets: ["10.55.8.1:9100"]
+    - targets: ["otel-collector:8889"]

@@ -1,8 +1,6 @@
 # Environment files for docker composes
 .env.production
+production.env
 
 # Home assistant configuration file
-configuration.production.yaml
-
-.env
-run-docker.sh
+configuration-production.yaml
