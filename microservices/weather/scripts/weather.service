@@ -1,0 +1,8 @@
+[Unit]
+Description=Weather Service
+
+[Service]
+ExecStart=/usr/bin/weather-service
+
+[Install]
+WantedBy=multi-user.target
