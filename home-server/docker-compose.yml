@@ -37,7 +37,6 @@ services:
       - traefik.http.services.homeassistant.loadbalancer.server.port=8123
     volumes:
       - ${STORAGE_DIR}/homeassistant:/config
-      - ${STORAGE_DIR}/homeassistant:/config
       - ${REPO_DIR}/configurations/home-assistant/configuration-production.yaml:/config/configuration.yaml
     restart: unless-stopped
     env_file:
@@ -106,7 +105,7 @@ services:
     container_name: influxdb
     labels:
       - traefik.http.routers.influxdb.rule=Host(`influxdb.pladijs`)
-      - traefik.http.services.influxdb.loadbalancer.server.port=3000
+      - traefik.http.services.influxdb.loadbalancer.server.port=8086
     image: influxdb
     restart: unless-stopped
     environment:
