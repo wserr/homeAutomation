@@ -2,7 +2,7 @@
 .env.production
 
 # Home assistant configuration file
-configuration-production.yaml
+**configuration-production.yaml
 
 .env
 run-docker.sh
