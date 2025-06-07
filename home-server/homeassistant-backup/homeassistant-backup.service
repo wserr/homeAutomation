@@ -1,0 +1,14 @@
+[Unit]
+Description=Backup Home Assistant
+After=network.target
+
+[Service]
+ExecStart=/home/willem/.bun/bin/bun /home/willem/repos/homeAutomation/home-server/homeassistant-backup/homeassistant-backup/index.ts
+WorkingDirectory=/home/willem/repos/homeAutomation/home-server/homeassistant-backup/homeassistant-backup
+Restart=on-failure
+User=willem
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

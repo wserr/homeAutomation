@@ -6,8 +6,8 @@ services:
       - traefik.http.routers.dashboard.rule=Host(`traefik.pladijs`)
       - traefik.http.services.dashboard.loadbalancer.server.port=8080
     volumes:
-      - ${REPO_DIR}/configurations/traefik/traefik.yml:/etc/traefik/traefik.yml
-      - ${STORAGE_DIR}/certificates:/var/lib/certificates
+      - ${REPO_DIR}/configurations/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ${STORAGE_DIR}/traefik/certificates:/var/lib/certificates
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 80:80
@@ -31,13 +31,14 @@ services:
     volumes:
       - ${STORAGE_DIR}/mariadb:/var/lib/mysql
   homeassistant:
-    image: "ghcr.io/home-assistant/home-assistant:stable"
+    build:
+      context: ./home-assistant
+      dockerfile: home-assistant.Dockerfile
     labels:
       - traefik.http.routers.homeassistant.rule=Host(`homeassistant.pladijs`)
       - traefik.http.services.homeassistant.loadbalancer.server.port=8123
     volumes:
       - ${STORAGE_DIR}/homeassistant:/config
-      - ${REPO_DIR}/configurations/home-assistant/configuration-production.yaml:/config/configuration.yaml
     restart: unless-stopped
     env_file:
       - environment-variables/local.env
