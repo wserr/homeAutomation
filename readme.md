@@ -2,4 +2,4 @@
 
 This repo describes my setup for Home Assistant.
 
-Test
+Testing
