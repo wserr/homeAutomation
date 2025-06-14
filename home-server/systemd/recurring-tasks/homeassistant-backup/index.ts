@@ -53,6 +53,9 @@ async function hotCopy(
 ) {
   const timestamp = moment().format("YYYY-MM-DD_HH-mm-ss"); // Return today's date time
 
+  // Make sure user has access to all folders
+  await $`sudo chown -R willem:willem /etc/homeassistant`;
+
   log.info("Creating new copy");
   await $`mkdir -p ${targetFolder}`;
   // Sync new copy

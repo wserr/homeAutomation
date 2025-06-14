@@ -1,4 +1,12 @@
 services:
+  mosquitto:
+    image: eclipse-mosquitto
+    ports:
+      - 1883:1883
+    volumes:
+      - ${REPO_DIR}/home-server/mosquitto/config:/mosquitto/config:rw
+      - ${STORAGE_DIR}/mosquitto/data:/mosquitto/data:rw
+      - ${STORAGE_DIR}/mosquitto/log:/mosquitto/log:rw
   traefik:
     restart: unless-stopped
     image: traefik:v3.2
@@ -84,8 +92,8 @@ services:
       - traefik.http.routers.prometheus.rule=Host(`prometheus.pladijs`)
       - traefik.http.services.prometheus.loadbalancer.server.port=9090
     volumes:
-      - ${REPO_DIR}/configurations/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ${STORAGE_DIR}/prometheus:/prometheus
+      - ${REPO_DIR}/configurations/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ${STORAGE_DIR}/prometheus:/prometheus:rw
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
