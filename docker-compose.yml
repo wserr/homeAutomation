@@ -41,7 +41,7 @@ services:
       - ${STORAGE_DIR}/mariadb:/var/lib/mysql
   homeassistant:
     build:
-      context: ./home-assistant
+      context: ./dockerfiles
       dockerfile: home-assistant.Dockerfile
     labels:
       - traefik.http.routers.homeassistant.rule=Host(`homeassistant.pladijs`)
@@ -63,15 +63,6 @@ services:
       - TZ=Europe/London
     volumes:
       - ${STORAGE_DIR}/syncthing:/var/syncthing
-    restart: unless-stopped
-    env_file:
-      - environment-variables/local.env
-      - environment-variables/production.env
-    healthcheck:
-      test: curl -fkLsS -m 2 127.0.0.1:8384/rest/noauth/health | grep -o --color=never OK || exit 1
-      interval: 1m
-      timeout: 10s
-      retries: 3  
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
