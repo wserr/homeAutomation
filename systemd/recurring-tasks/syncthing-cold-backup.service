@@ -1,0 +1,14 @@
+[Unit]
+Description=Backup Syncthing - Cold
+After=network.target
+
+[Service]
+ExecStart=syncting-backup --mode cold --sourceFolder /mnt/usb/syncting/hot --targetFolder /mnt/usb/syncting/cold --backupName syncting
+WorkingDirectory=/etc/syncting
+Restart=off
+User=willem
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

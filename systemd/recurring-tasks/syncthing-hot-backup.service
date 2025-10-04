@@ -1,0 +1,14 @@
+[Unit]
+Description=Backup Syncthing - Hot
+After=network.target
+
+[Service]
+ExecStart=syncthing-backup --mode hot --sourceFolder /etc/syncthing --targetFolder /mnt/usb/syncthing/hot --backupName syncthing
+WorkingDirectory=/etc/syncthing
+Restart=off
+User=willem
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
