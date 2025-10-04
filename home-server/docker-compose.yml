@@ -1,5 +1,6 @@
 services:
   mosquitto:
+    restart: unless-stopped
     image: eclipse-mosquitto
     ports:
       - 1883:1883
@@ -52,8 +53,7 @@ services:
       - environment-variables/local.env
       - environment-variables/production.env
   syncthing:
-    image: lscr.io/linuxserver/syncthing:latest
-    container_name: syncthing
+    image: syncthing/syncthing
     labels:
       - traefik.http.routers.syncthing.rule=Host(`syncthing.pladijs`)
       - traefik.http.services.syncthing.loadbalancer.server.port=8384
@@ -62,12 +62,16 @@ services:
       - PGID=1000
       - TZ=Europe/London
     volumes:
-      - ${STORAGE_DIR}/syncthing:/data1
-    ports:
-      - 22000:22000/tcp
-      - 22000:22000/udp
-      - 21027:21027/udp
+      - ${STORAGE_DIR}/syncthing:/var/syncthing
     restart: unless-stopped
+    env_file:
+      - environment-variables/local.env
+      - environment-variables/production.env
+    healthcheck:
+      test: curl -fkLsS -m 2 127.0.0.1:8384/rest/noauth/health | grep -o --color=never OK || exit 1
+      interval: 1m
+      timeout: 10s
+      retries: 3  
   node-exporter:
     image: prom/node-exporter:latest
     container_name: node-exporter
