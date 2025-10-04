@@ -3,7 +3,7 @@ Description=Backup Syncthing - Hot
 After=network.target
 
 [Service]
-ExecStart=syncthing-backup --mode hot --sourceFolder /etc/syncthing --targetFolder /mnt/usb/syncthing/hot --backupName syncthing
+ExecStart=homeassistant-backup --mode hot --sourceFolder /etc/syncthing --targetFolder /mnt/usb/syncthing/hot --backupName syncthing
 WorkingDirectory=/etc/syncthing
 Restart=off
 User=willem
