@@ -3,7 +3,7 @@ Description=Backup Syncthing - Cold
 After=network.target
 
 [Service]
-ExecStart=syncting-backup --mode cold --sourceFolder /mnt/usb/syncting/hot --targetFolder /mnt/usb/syncting/cold --backupName syncting
+ExecStart=homeassistant-backup --mode cold --sourceFolder /mnt/usb/syncting/hot --targetFolder /mnt/usb/syncting/cold --backupName syncting
 WorkingDirectory=/etc/syncting
 Restart=off
 User=willem
