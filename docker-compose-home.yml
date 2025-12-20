@@ -1,0 +1,19 @@
+services:
+  syncthing-home:
+    image: syncthing/syncthing
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - ${STORAGE_DIR}/syncthing:/var/syncthing
+    restart: unless-stopped
+    env_file:
+      - environment-variables/local.env
+    ports:
+      - 127.0.0.1:8384:8384
+    healthcheck:
+      test: curl -fkLsS -m 2 127.0.0.1:8384/rest/noauth/health | grep -o --color=never OK || exit 1
+      interval: 1m
+      timeout: 10s
+      retries: 3  

@@ -1,0 +1,14 @@
+[Unit]
+Description=Backup Home Assistant - Cold
+After=network.target
+
+[Service]
+ExecStart=homeassistant-backup --mode cold --sourceFolder /mnt/usb/homeassistant/hot --targetFolder /mnt/usb/homeassistant/cold --backupName homeassistant
+WorkingDirectory=/etc/homeassistant
+Restart=off
+User=willem
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

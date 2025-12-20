@@ -1,0 +1,11 @@
+[Unit]
+Description=Send ToDo mail
+                                                    
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=1day
+Persistent=true
+                                                    
+[Install]
+WantedBy=timers.target
+

@@ -1,0 +1,11 @@
+[Unit]
+Description=Run Home assistant cold backup Service every day
+                                                    
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=1day
+Persistent=true
+                                                    
+[Install]
+WantedBy=timers.target
+

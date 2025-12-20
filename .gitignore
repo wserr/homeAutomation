@@ -4,3 +4,7 @@ production.env
 
 # Home assistant configuration file
 configuration-production.yaml
+
+node_modules/
+
+config/

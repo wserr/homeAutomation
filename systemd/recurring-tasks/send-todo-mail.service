@@ -1,0 +1,14 @@
+[Unit]
+Description=Send todo mail
+After=network.target
+
+[Service]
+ExecStart=sh -c "rg '\- \[ \]' . | mail -s todos willemserruys@proton.me"
+WorkingDirectory=/home/willem/repos/zettelkasten
+Restart=no
+User=willem
+Environment=PATH=/usr/bin:/usr/local/bin
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target

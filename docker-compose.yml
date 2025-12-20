@@ -1,0 +1,136 @@
+services:
+  mosquitto:
+    restart: unless-stopped
+    image: eclipse-mosquitto
+    ports:
+      - 1883:1883
+    volumes:
+      - ${REPO_DIR}/home-server/mosquitto/config:/mosquitto/config:rw
+      - ${STORAGE_DIR}/mosquitto/data:/mosquitto/data:rw
+      - ${STORAGE_DIR}/mosquitto/log:/mosquitto/log:rw
+  traefik:
+    restart: unless-stopped
+    image: traefik:v3.2
+    labels:
+      - traefik.http.routers.dashboard.rule=Host(`traefik.pladijs`)
+      - traefik.http.services.dashboard.loadbalancer.server.port=8080
+    volumes:
+      - ${REPO_DIR}/configurations/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ${STORAGE_DIR}/traefik/certificates:/var/lib/certificates
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 80:80
+      - 443:443
+  whoami:
+    restart: unless-stopped
+    image: traefik/whoami
+    labels:
+      - traefik.http.routers.whoami.rule=Host(`whoami.pladijs`)
+      - traefik.http.services.whoami.loadbalancer.server.port=2001
+    command:
+      - --port=2001
+  db:
+    image: mariadb:latest
+    restart: unless-stopped
+    ports:
+      - 3306:3306
+    env_file:
+      - environment-variables/local.env
+      - environment-variables/production.env
+    volumes:
+      - ${STORAGE_DIR}/mariadb:/var/lib/mysql
+  homeassistant:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/home-assistant.Dockerfile
+    labels:
+      - traefik.http.routers.homeassistant.rule=Host(`homeassistant.pladijs`)
+      - traefik.http.services.homeassistant.loadbalancer.server.port=8123
+    volumes:
+      - ${STORAGE_DIR}/homeassistant:/config
+    restart: unless-stopped
+    env_file:
+      - environment-variables/local.env
+      - environment-variables/production.env
+  syncthing:
+    image: syncthing/syncthing
+    labels:
+      - traefik.http.routers.syncthing.rule=Host(`syncthing.pladijs`)
+      - traefik.http.services.syncthing.loadbalancer.server.port=8384
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/London
+    volumes:
+      - ${STORAGE_DIR}/syncthing:/var/syncthing
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    labels:
+      - traefik.http.routers.node-exporter.rule=Host(`node-exporter.pladijs`)
+      - traefik.http.services.node-exporter.loadbalancer.server.port=9100
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    labels:
+      - traefik.http.routers.prometheus.rule=Host(`prometheus.pladijs`)
+      - traefik.http.services.prometheus.loadbalancer.server.port=9090
+    volumes:
+      - ${REPO_DIR}/configurations/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ${STORAGE_DIR}/prometheus:/prometheus:rw
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+  grafana:
+    image: grafana/grafana:latest
+    volumes:
+      - ${STORAGE_DIR}/grafana:/var/lib/grafana
+    env_file:
+      - environment-variables/local.env
+      - environment-variables/production.env
+    labels:
+      - traefik.http.routers.grafana.rule=Host(`grafana.pladijs`)
+      - traefik.http.services.grafana.loadbalancer.server.port=3000
+  influxdb:
+    container_name: influxdb
+    labels:
+      - traefik.http.routers.influxdb.rule=Host(`influxdb.pladijs`)
+      - traefik.http.services.influxdb.loadbalancer.server.port=8086
+    image: influxdb
+    restart: unless-stopped
+    environment:
+      - TZ=Europe/Brussels
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+    env_file:
+      - environment-variables/local.env
+      - environment-variables/production.env
+    volumes:
+      - ${STORAGE_DIR}/influxdb/data:/var/lib/influxdb2
+      - ${STORAGE_DIR}/influxdb/config/:/etc/influxdb2
+    ulimits:
+      nofile:
+        soft: 32768
+        hard: 32768
+  otel-collector:
+    container_name: otel-collector
+    image: otel/opentelemetry-collector-contrib:0.111.0
+    restart: unless-stopped
+    volumes:
+      - ${REPO_DIR}/configurations/otel/collector-config.yaml:/etc/otelcol-contrib/config.yaml
+# Only enable if external services present
+#     ports:
+#       - 4317:4317 # OTLP gRPC receiver
