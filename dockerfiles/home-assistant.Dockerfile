@@ -1,3 +1,3 @@
 FROM ghcr.io/home-assistant/home-assistant:stable
 
-COPY ./configuration/configuration-production.yaml /config/configuration.yaml
+COPY ./configurations/home-assistant/configuration-production.yaml /config/configuration.yaml

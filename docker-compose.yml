@@ -41,8 +41,8 @@ services:
       - ${STORAGE_DIR}/mariadb:/var/lib/mysql
   homeassistant:
     build:
-      context: ./dockerfiles
-      dockerfile: home-assistant.Dockerfile
+      context: .
+      dockerfile: ./dockerfiles/home-assistant.Dockerfile
     labels:
       - traefik.http.routers.homeassistant.rule=Host(`homeassistant.pladijs`)
       - traefik.http.services.homeassistant.loadbalancer.server.port=8123
