@@ -96,6 +96,7 @@ services:
       - '--web.console.templates=/etc/prometheus/consoles'
       - '--web.enable-lifecycle'
   grafana:
+    restart: unless-stopped
     image: grafana/grafana:latest
     volumes:
       - ${STORAGE_DIR}/grafana:/var/lib/grafana
