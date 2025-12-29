@@ -20,17 +20,25 @@ app.MapPost(
             switch (body.Status)
             {
                 case "firing":
+                    Console.WriteLine("Peak too high. Shutting down heat pump.");
                     await client.GetAsync(
                         "http://192.168.1.121/control?cmd=heatpump&set_power_mode=off"
                     );
-                    Console.WriteLine("Peak too high. Shutting down heat pump.");
+                    await client.PostAsJsonAsync<DiscordMessage>(
+                        "https://discord.com/api/webhooks/1455072237207158981/C9qvSIGMZVc60VwpZizxqKigyzvA182RDSdt9k8qtWTq-fBgzlJHh53wAYIqYkGNkBM3",
+                        new DiscordMessage("Peak too high. Shutting down heat pump.", "willemBot")
+                    );
                     break;
                 case "resolved":
+                    Console.WriteLine("Peak acceptable. Re enabling heat pump.");
                     await client.GetAsync(
                         "http://192.168.1.121/control?cmd=heatpump&set_power_mode=on"
                     );
-                    Console.WriteLine("Peak acceptable. Re enabling heat pump.");
-		    break;
+                    await client.PostAsJsonAsync<DiscordMessage>(
+                        "https://discord.com/api/webhooks/1455072237207158981/C9qvSIGMZVc60VwpZizxqKigyzvA182RDSdt9k8qtWTq-fBgzlJHh53wAYIqYkGNkBM3",
+                        new DiscordMessage("Peak is acceptable. Re enabling heat pump.", "willemBot")
+                    );
+                    break;
                 default:
                     Console.WriteLine("Unknown body type");
                     break;
@@ -53,3 +61,5 @@ app.MapPost(
 app.Run();
 
 record AlertBody(string Status);
+
+record DiscordMessage(string content, string userName);
