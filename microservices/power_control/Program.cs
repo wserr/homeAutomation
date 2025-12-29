@@ -2,6 +2,12 @@ using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add JSON serialization services
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.PropertyNameCaseInsensitive = true;
+});
+
 var app = builder.Build();
 
 app.MapPost(
@@ -30,7 +36,4 @@ app.MapPost(
 
 app.Run();
 
-record AlertBody
-{
-	string status;
-}
+record AlertBody(string Status);
