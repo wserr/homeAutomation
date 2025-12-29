@@ -15,17 +15,16 @@ app.MapPost(
         async (AlertBody body) =>
         {
             Console.WriteLine("high power alert was received.");
-
             using var client = new HttpClient();
 	    var heatPumpState = await client.GetFromJsonAsync<HeatPumpStatus>("http://192.168.1.121/control");
 	    var message = "";
-	    Console.WriteLine(heatPumpState.power);
+	    Console.WriteLine(heatPumpState.heatpump.power);
             switch (body.Status)
             {
                 case "firing":
                     Console.WriteLine("Peak too high. Shutting down heat pump.");
 		    message = "@everyone peak is too high. Disabling heat pump. 🥶";
-		    if (heatPumpState.power == "on")
+		    if (heatPumpState.heatpump.power == "on")
 		    {
                     	await client.GetAsync(
                     	    "http://192.168.1.121/control?cmd=heatpump&set_power_mode=off"
@@ -43,7 +42,7 @@ app.MapPost(
                 case "resolved":
                     Console.WriteLine("Peak acceptable. Re enabling heat pump. 🌶️");
 		    message = "Re enabled heat pump.";
-		    if (heatPumpState.power == "off")
+		    if (heatPumpState.heatpump.power == "off")
 		    {
                     	await client.GetAsync(
                     	    "http://192.168.1.121/control?cmd=heatpump&set_power_mode=on"
@@ -82,4 +81,6 @@ record AlertBody(string Status);
 
 record DiscordMessage(string content, string userName);
 
-record HeatPumpStatus(string power);
+record HeatPumpStatus(HeatPumpStatusBody heatpump);
+
+record HeatPumpStatusBody(string power);
