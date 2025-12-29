@@ -21,13 +21,13 @@ app.MapPost(
             {
                 case "firing":
                     await client.GetAsync(
-                        "http://192.168.1.121/control?cmd=heatpump&set_power_mode=on"
+                        "http://192.168.1.121/control?cmd=heatpump&set_power_mode=off"
                     );
                     Console.WriteLine("Peak too high. Shutting down heat pump.");
                     break;
                 case "resolved":
                     await client.GetAsync(
-                        "http://192.168.1.121/control?cmd=heatpump&set_power_mode=off"
+                        "http://192.168.1.121/control?cmd=heatpump&set_power_mode=on"
                     );
                     Console.WriteLine("Peak acceptable. Re enabling heat pump.");
 		    break;
