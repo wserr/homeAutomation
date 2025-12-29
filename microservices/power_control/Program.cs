@@ -4,17 +4,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
 
-app.MapGet(
+app.MapPost(
         "/high_power_alert",
-        () =>
+        (object body) =>
         {
             Console.WriteLine("high power alert was received.");
+            Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(body));
             return new OkResult();
         }
     )
     .WithName("HighPowerAlert");
 
-app.MapGet(
+app.MapPost(
         "/low_power_alert",
         () =>
         {

@@ -132,10 +132,10 @@ services:
     restart: unless-stopped
     volumes:
       - ${REPO_DIR}/configurations/otel/collector-config.yaml:/etc/otelcol-contrib/config.yaml
+# Only enable if external services present
+#     ports:
+#       - 4317:4317 # OTLP gRPC receiver
   power_control:
     build:
       context: .
       dockerfile: ./dockerfiles/power_control.Dockerfile
-# Only enable if external services present
-#     ports:
-#       - 4317:4317 # OTLP gRPC receiver
