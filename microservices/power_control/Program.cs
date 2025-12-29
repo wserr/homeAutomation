@@ -18,12 +18,13 @@ app.MapPost(
 
             using var client = new HttpClient();
 	    var heatPumpState = await client.GetFromJsonAsync<HeatPumpStatus>("http://192.168.1.121/control");
+	    var message = "";
 	    Console.WriteLine(heatPumpState.power);
             switch (body.Status)
             {
                 case "firing":
                     Console.WriteLine("Peak too high. Shutting down heat pump.");
-		    var message = "@everyone peak is too high. Disabling heat pump. 🥶";
+		    message = "@everyone peak is too high. Disabling heat pump. 🥶";
 		    if (heatPumpState.power == "on")
 		    {
                     	await client.GetAsync(
@@ -41,7 +42,7 @@ app.MapPost(
                     break;
                 case "resolved":
                     Console.WriteLine("Peak acceptable. Re enabling heat pump. 🌶️");
-		    var message = "Re enabled heat pump.";
+		    message = "Re enabled heat pump.";
 		    if (heatPumpState.power == "off")
 		    {
                     	await client.GetAsync(
