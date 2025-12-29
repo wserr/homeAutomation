@@ -26,17 +26,17 @@ app.MapPost(
                     );
                     await client.PostAsJsonAsync<DiscordMessage>(
                         "https://discord.com/api/webhooks/1455072237207158981/C9qvSIGMZVc60VwpZizxqKigyzvA182RDSdt9k8qtWTq-fBgzlJHh53wAYIqYkGNkBM3",
-                        new DiscordMessage("Peak too high. Shutting down heat pump.", "willemBot")
+                        new DiscordMessage("Peak too high. Shutting down heat pump. 🥶", "willemBot")
                     );
                     break;
                 case "resolved":
-                    Console.WriteLine("Peak acceptable. Re enabling heat pump.");
+                    Console.WriteLine("Peak acceptable. Re enabling heat pump. ");
                     await client.GetAsync(
                         "http://192.168.1.121/control?cmd=heatpump&set_power_mode=on"
                     );
                     await client.PostAsJsonAsync<DiscordMessage>(
                         "https://discord.com/api/webhooks/1455072237207158981/C9qvSIGMZVc60VwpZizxqKigyzvA182RDSdt9k8qtWTq-fBgzlJHh53wAYIqYkGNkBM3",
-                        new DiscordMessage("Peak is acceptable. Re enabling heat pump.", "willemBot")
+                        new DiscordMessage("Peak is acceptable. Re enabling heat pump. 🌶️", "willemBot")
                     );
                     break;
                 default:
