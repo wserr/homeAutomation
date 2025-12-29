@@ -33,7 +33,7 @@ app.MapPost(
 		    }
 		    else
 		    {
-			    message = "@everyone heat pump could not be disabled because state was not 'ON'";
+			    message = "@everyone high power alert, but heat pump could not be disabled because state was not 'ON'";
 		    }
                     await client.PostAsJsonAsync<DiscordMessage>(
                         "https://discord.com/api/webhooks/1455072237207158981/C9qvSIGMZVc60VwpZizxqKigyzvA182RDSdt9k8qtWTq-fBgzlJHh53wAYIqYkGNkBM3",
