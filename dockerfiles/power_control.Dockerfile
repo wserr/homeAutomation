@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/aspnet:10.0.101-noble-arm64v8 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0.1-noble-arm64v8 AS base
 USER $APP_UID
 
 EXPOSE 8080
