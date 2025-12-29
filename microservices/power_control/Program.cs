@@ -15,10 +15,26 @@ app.MapPost(
         async (AlertBody body) =>
         {
             Console.WriteLine("high power alert was received.");
-            Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(body));
 
-	    using var client = new HttpClient();
-	    await client.GetAsync("http://192.168.1.121/control?cmd=heatpump&set_power_mode=off");
+            using var client = new HttpClient();
+            switch (body.Status)
+            {
+                case "firing":
+                    await client.GetAsync(
+                        "http://192.168.1.121/control?cmd=heatpump&set_power_mode=on"
+                    );
+                    Console.WriteLine("Peak too high. Shutting down heat pump.");
+                    break;
+                case "resolved":
+                    await client.GetAsync(
+                        "http://192.168.1.121/control?cmd=heatpump&set_power_mode=off"
+                    );
+                    Console.WriteLine("Peak acceptable. Re enabling heat pump.");
+		    break;
+                default:
+                    Console.WriteLine("Unknown body type");
+                    break;
+            }
             return new OkResult();
         }
     )
