@@ -139,4 +139,3 @@ services:
     build:
       context: .
       dockerfile: ./dockerfiles/power_control.Dockerfile
-    network_mode: "host"

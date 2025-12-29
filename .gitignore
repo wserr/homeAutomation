@@ -15,3 +15,5 @@ config/
 [Rr]eleases/
 
 [Oo]bj/
+.aider*
+.env
