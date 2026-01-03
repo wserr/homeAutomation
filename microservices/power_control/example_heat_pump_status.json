@@ -1,0 +1,140 @@
+{
+    "fw": {
+        "curr": "3.1.7",
+        "last": "3.1.7",
+        "model": "ME_CN105_ATW_WIFI",
+        "upd": true
+    },
+    "heatpump": {
+        "boiler_flow_temperature": 25.0,
+        "boiler_return_temperature": 25.0,
+        "booster_active": false,
+        "compressor_frequency": 0,
+        "compressor_on": false,
+        "controller_datetime": "2025-12-29 07:02:35",
+        "controller_version": 3,
+        "defrost_active": false,
+        "dhw": {
+            "flow_target_temperature": 50.0,
+            "flow_temperature_drop": 10.0,
+            "forced_active": "off",
+            "legionella_prevention_target_temp": 60.0,
+            "mode": "off",
+            "temperature": 51.5,
+            "temperature_secondary": 25.0
+        },
+        "dipswitch": {
+            "sw1": "10110110",
+            "sw2": "10101000",
+            "sw3": "00010000",
+            "sw4": "00000000",
+            "sw5": "00111110",
+            "sw6": "00000000"
+        },
+        "energy": {
+            "consumed_cooling": 0.0,
+            "consumed_dhw": 3.6,
+            "consumed_heating": 72.2,
+            "delivered_cooling": 0.0,
+            "delivered_dhw": 8.6,
+            "delivered_heating": 204.1
+        },
+        "energy_consumed_increasing": 128.1,
+        "fault_code": "No error",
+        "feed_temperature": 38.5,
+        "flowrate": 26,
+        "heat_source": 0,
+        "holiday_mode": "off",
+        "immersion_active": false,
+        "in1_thermostat_request": false,
+        "in5_thermostat_request": false,
+        "in6_thermostat_request": false,
+        "indicative_output_power": 0.0,
+        "max_flow_temperature": 40.0,
+        "min_flow_temperature": 25.0,
+        "mixing_tank_temperature": 25.0,
+        "mixing_valve_status": 4,
+        "mixing_valve_step": 0,
+        "mrc_flag": 7,
+        "multizone_status": 0,
+        "operation": "heat_on",
+        "output_power": 5,
+        "outside_temperature": 0.0,
+        "power": "on",
+        "prohibit": {
+            "cooling_zone1": "off",
+            "cooling_zone2": "off",
+            "dhw": "off",
+            "heating_zone1": "off",
+            "heating_zone2": "off",
+            "server_control": "on"
+        },
+        "rcdischargeTemp": 0.0,
+        "rcdischargesuperheattemp": 0.0,
+        "rcoucompressorsurfacetemp": 0.0,
+        "rcouheatsinktemp": 0.0,
+        "rcouliquidpipetemp": 0.0,
+        "rcousuctionpipetemp": 0.0,
+        "rcoutwoPhasepipetemp": 0.0,
+        "rcsubcooltemp": 0.0,
+        "refrigerant_condensing_temperature": 40.6,
+        "refrigerant_liquid_temperature": 29.5,
+        "return_temperature": 35.5,
+        "runtime": 8847.0,
+        "threeway_valve2_active": true,
+        "threeway_valve_active": false,
+        "waterpump2_active": true,
+        "waterpump3_active": false,
+        "waterpump_active": true,
+        "zone1": {
+            "feed_temperature": 36.0,
+            "flow_target_temperature": 46.5,
+            "mode": "HEAT_COMPENSATION_CURVE",
+            "return_temperature": 32.0,
+            "room_target_temperature": 18.0,
+            "room_temperature": 18.0
+        },
+        "zone2": {
+            "feed_temperature": 25.0,
+            "flow_target_temperature": 35.0,
+            "mode": "HEAT_FLOW_TEMP",
+            "return_temperature": 25.0,
+            "room_target_temperature": 635.4,
+            "room_temperature": 0.0
+        }
+    },
+    "http": {
+        "host": "heatpump"
+    },
+    "mqtt": {
+        "broker": "mqtt://192.168.1.81",
+        "con": true,
+        "ena": true,
+        "ha_auto_disc": true,
+        "port": 1883,
+        "pub_sys_data": true,
+        "sts": "OK",
+        "user": "admin"
+    },
+    "sys": {
+        "bl": "V0.5",
+        "conext": true,
+        "conhp": true,
+        "dbg": false,
+        "frname": "Living room",
+        "hw": "ME_V4.1",
+        "id": "273526330095088",
+        "lang": "ENG",
+        "name": "HVAC_4FC5F8",
+        "scale": "C",
+        "sts": 3,
+        "stsled": true,
+        "up": 1799393
+    },
+    "wifi": {
+        "ip": "192.168.1.121",
+        "mac": "F0:F5:BD:4F:C5:F8",
+        "rssi": -33,
+        "ssid": "Pladijs124"
+    }
+}

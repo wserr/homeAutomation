@@ -135,3 +135,7 @@ services:
 # Only enable if external services present
 #     ports:
 #       - 4317:4317 # OTLP gRPC receiver
+  power_control:
+    build:
+      context: .
+      dockerfile: ./dockerfiles/power_control.Dockerfile

@@ -8,3 +8,12 @@ configuration-production.yaml
 node_modules/
 
 config/
+
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+
+[Oo]bj/
+.aider*
+.env
